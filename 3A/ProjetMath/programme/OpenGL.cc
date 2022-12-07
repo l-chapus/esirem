@@ -234,7 +234,7 @@ void init()
  
   glNewList(4,GL_COMPILE_AND_EXECUTE);  //liste numero 4
     std::vector<float> x1 = {2,3,6,5};
-    std::vector<float> y1 = {0,5,3,2};
+    std::vector<float> y1 = {0,5,5,2};
     
     trace_init(x1,y1);
     
@@ -246,7 +246,6 @@ void init()
 
     x1.at(0) = (x1.at(0)+x1.at(1))/2;
     y1.at(0) = (y1.at(0)+y1.at(1))/2;
-
     x1.at(n) = (x1.at(n)+x1.at(n-1))/2;
     y1.at(n) = (y1.at(n)+y1.at(n-1))/2;
 
@@ -257,11 +256,9 @@ void init()
 
     x2.at(1) = x_0;
     y2.at(1) = y_0;
-
     x2.at(n-1) = x_n;
     y2.at(n-1) = y_n;
     
-
     trace_courbe(x2,y2);
 
   glEndList();
