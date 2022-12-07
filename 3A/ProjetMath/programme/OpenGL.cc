@@ -201,7 +201,22 @@ void trace_init(std::vector<float> a ,std::vector<float> b){
   trace_segment(a.at(fin-1),b.at(fin-1),a.at(fin-2),b.at(fin-2),1.0,0.,0.,3.0);
 }
 void trace_courbe(std::vector<float> a ,std::vector<float> b){
-  
+  double t = 0.0;
+  float m = 1001;
+  float x0=a.at(0),y0=b.at(0),x1=0.0,y1=0.0;
+  int n = a.size();
+  for(int j=0;j<m;++j){
+    x1=0.0;
+    y1=0.0;
+    t=j/m;
+    for(int i=0;i<n;++i){
+      x1=x1+coef_Bezier(i,n-1,t)*a.at(i);
+      y1=y1+coef_Bezier(i,n-1,t)*b.at(i);
+    }
+    trace_segment(x0,y0,x1,y1,0.0,1.,0.,3.0);
+    x0=x1;
+    y0=y1;
+  }
 }
 
 void init()
@@ -218,13 +233,36 @@ void init()
   glEndList();
  
   glNewList(4,GL_COMPILE_AND_EXECUTE);  //liste numero 4
-    std::vector<float> x = {2,3,8,6,5};
-    std::vector<float> y = {0,5,2,3,12};
+    std::vector<float> x1 = {2,3,6,5};
+    std::vector<float> y1 = {0,5,3,2};
+    
+    trace_init(x1,y1);
+    
+    int n = x1.size()-1;
+    float x_0 = x1.at(0);
+    float y_0 = y1.at(0);
+    float x_n = x1.at(n);
+    float y_n = y1.at(n);
 
-    trace_init(x,y);
+    x1.at(0) = (x1.at(0)+x1.at(1))/2;
+    y1.at(0) = (y1.at(0)+y1.at(1))/2;
 
-    std::vector<float> z = y;
-    std::cout<< z.at(3) <<std::endl;
+    x1.at(n) = (x1.at(n)+x1.at(n-1))/2;
+    y1.at(n) = (y1.at(n)+y1.at(n-1))/2;
+
+    trace_courbe(x1,y1);
+
+    std::vector<float> x2 = x1;
+    std::vector<float> y2 = y1;
+
+    x2.at(1) = x_0;
+    y2.at(1) = y_0;
+
+    x2.at(n-1) = x_n;
+    y2.at(n-1) = y_n;
+    
+
+    trace_courbe(x2,y2);
 
   glEndList();
  
