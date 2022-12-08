@@ -173,8 +173,10 @@ void trace_segment(double x0, double y0,double x1, double y1, double red, double
 //fonction ou les objets sont a definir
 
 #include <vector>
+#include <assert.h>
 
 float factorielle(int n){
+  assert (n>=0 && "Factorielle non défini.");
   float S=1.0;
   for(int k=1;k<(n+1);++k){
     S=S*k;
@@ -182,6 +184,7 @@ float factorielle(int n){
   return S;
 }
 float k_parmi_n(int k,int n){
+  assert (n>=k && k>=0 && "Coefficient binomial non défini.");
   float S=factorielle(n)/(factorielle(k)*factorielle(n-k));
   return S;
 }
@@ -191,7 +194,7 @@ float coef_Bezier(int i,int n,float t){
   return S;
 }
 void trace_init(std::vector<float> a ,std::vector<float> b){
-  //rajouter un assert a.size == b.size
+  assert (a.size()==b.size() && "Taille des listes différentes");
   openGL(a.at(0),b.at(0),0.2,0.2,0.90,10.);
   openGL(a.at(1),b.at(1),0.2,0.2,0.90,10.);
   trace_segment(a.at(0),b.at(0),a.at(1),b.at(1),1.0,0.,0.,0.5);
@@ -201,6 +204,7 @@ void trace_init(std::vector<float> a ,std::vector<float> b){
   trace_segment(a.at(fin-1),b.at(fin-1),a.at(fin-2),b.at(fin-2),1.0,0.,0.,0.5);
 }
 void trace_courbe(std::vector<float> a ,std::vector<float> b){
+  assert (a.size()==b.size() && "Taille des listes différentes");
   double t = 0.0;
   float m = 1001;
   float x0=a.at(0),y0=b.at(0),x1=0.0,y1=0.0;
