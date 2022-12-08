@@ -177,24 +177,6 @@ void trace_segment(double x0, double y0,double x1, double y1, double red, double
 #include <assert.h>
 
 
-float factorielle(int n){
-  assert (n>=0 && "Factorielle non défini.");
-  float S=1.0;
-  for(int k=1;k<(n+1);++k){
-    S=S*k;
-  }
-  return S;
-}
-float k_parmi_n(int k,int n){
-  assert (n>=k && k>=0 && "Coefficient binomial non défini.");
-  float S=factorielle(n)/(factorielle(k)*factorielle(n-k));
-  return S;
-}
-float coef_Bezier(int i,int n,float t){
-  float S=0.0;
-  S = k_parmi_n(i,n)*pow(t,i)*pow(1-t,n-i);
-  return S;
-}
 void trace_init(std::vector<float> a ,std::vector<float> b){
   assert (a.size()==b.size() && "Taille des listes différentes");
   openGL(a.at(0),b.at(0),0.2,0.2,0.90,10.);
@@ -205,6 +187,15 @@ void trace_init(std::vector<float> a ,std::vector<float> b){
   openGL(a.at(fin-2),b.at(fin-2),0.2,0.2,0.90,10.);
   trace_segment(a.at(fin-1),b.at(fin-1),a.at(fin-2),b.at(fin-2),1.0,0.,0.,0.5);
 }
+float distance(float x_A,float y_A,float x_B,float y_B){
+  float d = 0.0;
+  d = pow(pow(x_A-x_B ,2) + pow(y_A-y_B ,2) , 0.5);
+  return d;
+}
+void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M){
+  
+  
+}
 void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M){
   float a1=0.0,a2=0.0,b1=0.0,b2=0.0;
   a1 = (y.at(0)-y.at(1))/(x.at(0)-x.at(1));   //coef directeur de la première droite
@@ -213,43 +204,18 @@ void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float&
   b2 = y.at(2)-a2*x.at(2);
 
   if((a1-a2)==0){                           //droite parallèle
-
+    droite_parallele(x ,y,x_M,y_M);
   }
   else{                                     //droite séquente
     x_M = (b2-b1)/(a1-a2);
     y_M = a1*x_M+b1;
   }
 }
-float distance(float x_A,float y_A,float x_B,float y_B){
-  float d = 0.0;
-  d = pow(pow(x_A-x_B ,2) + pow(y_A-y_B ,2) , 0.5);
-  return d;
-}
-void trace_courbe(std::vector<float> a ,std::vector<float> b){
-  assert (a.size()==b.size() && "Taille des listes différentes");
-  double t = 0.0;
-  float m = 1001;
-  float x0=a.at(0),y0=b.at(0),x1=0.0,y1=0.0;
-  int n = a.size();
-  for(int j=0;j<m;++j){
-    x1=0.0;
-    y1=0.0;
-    t=j/m;
-    for(int i=0;i<n;++i){
-      x1=x1+coef_Bezier(i,n-1,t)*a.at(i);
-      y1=y1+coef_Bezier(i,n-1,t)*b.at(i);
-    }
-    trace_segment(x0,y0,x1,y1,0.0,1.,0.,3.0);
-    x0=x1;
-    y0=y1;
-  }
-}
-void trace_courbe2(std::vector<float>& x ,std::vector<float>& y,float x_M,float y_M){
+void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y_M){
   assert (x.size()==y.size() && "Taille des listes différentes");
   
   std::array<float,3> x0 = {0.0,x_M,0.0};
   std::array<float,3> y0 = {0.0,y_M,0.0};
-  
   if(distance(x.at(0),y.at(0),x_M,y_M) < distance(x.at(1),y.at(1),x_M,y_M)){
     x0.at(0) = x.at(1);
     y0.at(0) = y.at(1);
@@ -296,11 +262,17 @@ void init()
  
   glNewList(4,GL_COMPILE_AND_EXECUTE);  //liste numero 4
       
-    std::vector<float> x = {-1,9.48,7};
-    std::vector<float> y = {-3,5.38,-7};
-    
+    std::vector<float> x = {-1,4,-0.5,2};
+    std::vector<float> y = {-3,1,-4,-2};
     trace_init(x,y);
-    trace_courbe(x,y);
+    
+    float x_F=0.0,y_F=0.0;
+
+    point_controle(x,y,x_F,y_F);
+    std::cout << x_F << y_F << std::endl;
+    trace_courbe(x,y,x_F,y_F);
+
+    openGL(x_F,y_F,1.,0.,0.,10.);
 
   glEndList();
  
@@ -313,12 +285,10 @@ void init()
     float x_E=0.0,y_E=0.0;
 
     point_controle(x1,y1,x_E,y_E);
+    trace_courbe(x1,y1,x_E,y_E);
 
-    trace_courbe2(x1,y1,x_E,y_E);
+    openGL(x_E,y_E,1.,0.,0.,10.);       //point de contrôle
 
-  glEndList();
-  glNewList(6,GL_COMPILE_AND_EXECUTE); //liste numero 6
-      
   glEndList();
 
 
@@ -346,7 +316,7 @@ void affichage()
       glCallList(1); // appel de la liste numero 1
       glCallList(2);   // appel de la liste numero 2
       glCallList(4);   // appel de la liste numero 4
-      glCallList(5);   // appel de la liste numero 5
+      //glCallList(5);   // appel de la liste numero 5
  glFlush(); 
   // On echange les buffers
   glutSwapBuffers();
