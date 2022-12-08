@@ -194,11 +194,11 @@ void trace_init(std::vector<float> a ,std::vector<float> b){
   //rajouter un assert a.size == b.size
   openGL(a.at(0),b.at(0),0.2,0.2,0.90,10.);
   openGL(a.at(1),b.at(1),0.2,0.2,0.90,10.);
-  trace_segment(a.at(0),b.at(0),a.at(1),b.at(1),1.0,0.,0.,3.0);
+  trace_segment(a.at(0),b.at(0),a.at(1),b.at(1),1.0,0.,0.,0.5);
   int fin=a.size();
   openGL(a.at(fin-1),b.at(fin-1),0.2,0.2,0.90,10.);
   openGL(a.at(fin-2),b.at(fin-2),0.2,0.2,0.90,10.);
-  trace_segment(a.at(fin-1),b.at(fin-1),a.at(fin-2),b.at(fin-2),1.0,0.,0.,3.0);
+  trace_segment(a.at(fin-1),b.at(fin-1),a.at(fin-2),b.at(fin-2),1.0,0.,0.,0.5);
 }
 void trace_courbe(std::vector<float> a ,std::vector<float> b){
   double t = 0.0;
@@ -233,33 +233,12 @@ void init()
   glEndList();
  
   glNewList(4,GL_COMPILE_AND_EXECUTE);  //liste numero 4
-    std::vector<float> x1 = {2,3,6,5};
-    std::vector<float> y1 = {0,5,5,2};
+    std::vector<float> x = {2,3,5};
+    std::vector<float> y = {0,5,2};
     
-    trace_init(x1,y1);
+    trace_init(x,y);
     
-    int n = x1.size()-1;
-    float x_0 = x1.at(0);
-    float y_0 = y1.at(0);
-    float x_n = x1.at(n);
-    float y_n = y1.at(n);
-
-    x1.at(0) = (x1.at(0)+x1.at(1))/2;
-    y1.at(0) = (y1.at(0)+y1.at(1))/2;
-    x1.at(n) = (x1.at(n)+x1.at(n-1))/2;
-    y1.at(n) = (y1.at(n)+y1.at(n-1))/2;
-
-    trace_courbe(x1,y1);
-
-    std::vector<float> x2 = x1;
-    std::vector<float> y2 = y1;
-
-    x2.at(1) = x_0;
-    y2.at(1) = y_0;
-    x2.at(n-1) = x_n;
-    y2.at(n-1) = y_n;
-    
-    trace_courbe(x2,y2);
+    trace_courbe(x,y);
 
   glEndList();
  
