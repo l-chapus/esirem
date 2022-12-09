@@ -170,86 +170,102 @@ void trace_segment(double x0, double y0,double x1, double y1, double red, double
 }
 
 	
-//fonction ou les objets sont a definir
+//fonctions ou les objets sont a definir
 
 #include <vector>
 #include <array>
 #include <assert.h>
 #include <algorithm>               //pour le std::sort
 
-void trace_init(std::vector<float> a ,std::vector<float> b){
-  assert (a.size()==b.size() && "Taille des listes différentes");
-  openGL(a.at(0),b.at(0),0.2,0.2,0.90,10.);
-  openGL(a.at(1),b.at(1),0.2,0.2,0.90,10.);
-  trace_segment(a.at(0),b.at(0),a.at(1),b.at(1),1.0,0.,0.,0.5);
-  int fin=a.size();
-  openGL(a.at(fin-1),b.at(fin-1),0.2,0.2,0.90,10.);
-  openGL(a.at(fin-2),b.at(fin-2),0.2,0.2,0.90,10.);
-  trace_segment(a.at(fin-1),b.at(fin-1),a.at(fin-2),b.at(fin-2),1.0,0.,0.,0.5);
+void trace_init(std::vector<float> x ,std::vector<float> y)
+{
+  assert (x.size()==y.size() && "Taille des listes différentes (tracer initiale)");
+  openGL(x.at(0),y.at(0),0.2,0.2,0.90,10.);
+  openGL(x.at(1),y.at(1),0.2,0.2,0.90,10.);
+  trace_segment(x.at(0),y.at(0),x.at(1),y.at(1),1.0,0.,0.,0.5);
+  int fin=x.size();
+  openGL(x.at(fin-1),y.at(fin-1),0.2,0.2,0.90,10.);
+  openGL(x.at(fin-2),y.at(fin-2),0.2,0.2,0.90,10.);
+  trace_segment(x.at(fin-1),y.at(fin-1),x.at(fin-2),y.at(fin-2),1.0,0.,0.,0.5);
 }
-float distance(float x_A,float y_A,float x_B,float y_B){
-  float d = 0.0;
-  d = pow(pow(x_A-x_B ,2) + pow(y_A-y_B ,2) , 0.5);
-  return d;
+float distance(float x_A,float y_A,float x_B,float y_B)
+{
+  return (pow(pow(x_A-x_B ,2) + pow(y_A-y_B ,2) , 0.5));
 }
-void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M){
+void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M)
+{
   float d1 = distance(x.at(0),y.at(0),x.at(3),y.at(3));       //AD
   float d2 = distance(x.at(0),y.at(0),x.at(2),y.at(2));       //AC
   float d3 = distance(x.at(1),y.at(1),x.at(2),y.at(2));       //BC
   float d4 = distance(x.at(1),y.at(1),x.at(3),y.at(3));       //BD
   std::array<float,4> x0 = {d1,d2,d3,d4};
-  std::sort(x0.begin(), x0.end());                            //trie dans l'ordre croissant
-  if(x0.at(0)==d1){
+  std::sort(x0.begin(), x0.end());                            //trie dans l'ordre croissant les distances et ne conserve que la disatnce la plus petite
+  if(x0.at(0)==d1)
+  {
     x_M=(x.at(0)+x.at(3))/2;
     y_M=(y.at(0)+y.at(3))/2;
   }
-  if(x0.at(0)==d2){
+  if(x0.at(0)==d2)
+  {
     x_M=(x.at(0)+x.at(2))/2;
     y_M=(y.at(0)+y.at(2))/2;
   }
-  if(x0.at(0)==d3){
+  if(x0.at(0)==d3)
+  {
     x_M=(x.at(1)+x.at(2))/2;
     y_M=(y.at(1)+y.at(2))/2;
   }
-  if(x0.at(0)==d4){
+  if(x0.at(0)==d4)
+  {
     x_M=(x.at(1)+x.at(3))/2;
     y_M=(y.at(1)+y.at(3))/2;
   }
 
 }
-void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M){
+void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M)
+{
+  assert (x.size()==y.size() && "Taille des listes différentes (point de contrôle)");
+
   float a1=0.0,a2=0.0,b1=0.0,b2=0.0;
   a1 = (y.at(0)-y.at(1))/(x.at(0)-x.at(1));   //coef directeur de la première droite
   a2 = (y.at(2)-y.at(3))/(x.at(2)-x.at(3));   //coef directeur de la deuxième droite
-  b1 = y.at(0)-a1*x.at(0);                    //ordonné à l'origine
-  b2 = y.at(2)-a2*x.at(2);
+  b1 = y.at(0)-a1*x.at(0);                    //ordonné à l'origine de la première droite
+  b2 = y.at(2)-a2*x.at(2);                    //ordonné à l'origine de la deuxième droite
 
-  if((a1-a2)==0){                           //droite parallèle
+  if((a1-a2)==0)                          //droites parallèles
+  {                           
     droite_parallele(x,y,x_M,y_M);
   }
-  else{                                     //droite séquente
+  else                                    //droites séquentes
+  {                                     
     x_M = (b2-b1)/(a1-a2);
-    y_M = a1*x_M+b1;
+    y_M = a1*x_M+b1;       //ou y_M = a2*x_M+b2  (même résultat)
+
   }
 }
-void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y_M){
-  assert (x.size()==y.size() && "Taille des listes différentes");
+void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y_M)
+{
+  assert (x.size()==y.size() && "Taille des listes différentes (tracer de la courbe)");
   
   std::array<float,3> x0 = {0.0,x_M,0.0};
   std::array<float,3> y0 = {0.0,y_M,0.0};
-  if(distance(x.at(0),y.at(0),x_M,y_M) < distance(x.at(1),y.at(1),x_M,y_M)){
+  if(distance(x.at(0),y.at(0),x_M,y_M) < distance(x.at(1),y.at(1),x_M,y_M))
+  {
     x0.at(0) = x.at(1);
     y0.at(0) = y.at(1);
   }
-  else{
+  else
+  {
     x0.at(0) = x.at(0);
     y0.at(0) = y.at(0);
   }
-  if(distance(x.at(2),y.at(2),x_M,y_M) < distance(x.at(3),y.at(3),x_M,y_M)){
+  if(distance(x.at(2),y.at(2),x_M,y_M) < distance(x.at(3),y.at(3),x_M,y_M))
+  {
     x0.at(2) = x.at(3);
     y0.at(2) = y.at(3);
   }
-  else{
+  else
+  {
     x0.at(2) = x.at(2);
     y0.at(2) = y.at(2);
   }
@@ -257,7 +273,8 @@ void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y
   double t = 0.0;
   float n = 1001;
   float x_tmp0=x0.at(0),y_tmp0=y0.at(0),x_tmp1=0.0,y_tmp1=0.0;
-  for(int k=0;k<n;++k){
+  for(int k=0;k<n;++k)
+  {
     t=k/n;
     x_tmp1=(1-t)*(1-t)*x0.at(0)+2*t*(1-t)*x0.at(1)+t*t*x0.at(2);
     y_tmp1=(1-t)*(1-t)*y0.at(0)+2*t*(1-t)*y0.at(1)+t*t*y0.at(2);
