@@ -175,7 +175,7 @@ void trace_segment(double x0, double y0,double x1, double y1, double red, double
 #include <vector>
 #include <array>
 #include <assert.h>
-
+#include <algorithm>               //pour le std::sort
 
 void trace_init(std::vector<float> a ,std::vector<float> b){
   assert (a.size()==b.size() && "Taille des listes différentes");
@@ -193,8 +193,29 @@ float distance(float x_A,float y_A,float x_B,float y_B){
   return d;
 }
 void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M){
-  
-  
+  float d1 = distance(x.at(0),y.at(0),x.at(3),y.at(3));       //AD
+  float d2 = distance(x.at(0),y.at(0),x.at(2),y.at(2));       //AC
+  float d3 = distance(x.at(1),y.at(1),x.at(2),y.at(2));       //BC
+  float d4 = distance(x.at(1),y.at(1),x.at(3),y.at(3));       //BD
+  std::array<float,4> x0 = {d1,d2,d3,d4};
+  std::sort(x0.begin(), x0.end());                            //trie dans l'ordre croissant
+  if(x0.at(0)==d1){
+    x_M=(x.at(0)+x.at(3))/2;
+    y_M=(y.at(0)+y.at(3))/2;
+  }
+  if(x0.at(0)==d2){
+    x_M=(x.at(0)+x.at(2))/2;
+    y_M=(y.at(0)+y.at(2))/2;
+  }
+  if(x0.at(0)==d3){
+    x_M=(x.at(1)+x.at(2))/2;
+    y_M=(y.at(1)+y.at(2))/2;
+  }
+  if(x0.at(0)==d4){
+    x_M=(x.at(1)+x.at(3))/2;
+    y_M=(y.at(1)+y.at(3))/2;
+  }
+
 }
 void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M){
   float a1=0.0,a2=0.0,b1=0.0,b2=0.0;
@@ -204,7 +225,7 @@ void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float&
   b2 = y.at(2)-a2*x.at(2);
 
   if((a1-a2)==0){                           //droite parallèle
-    droite_parallele(x ,y,x_M,y_M);
+    droite_parallele(x,y,x_M,y_M);
   }
   else{                                     //droite séquente
     x_M = (b2-b1)/(a1-a2);
@@ -260,7 +281,7 @@ void init()
     trace_segment(xO,yO,xJ,yJ,1.0,0.50,0.0,2.0);// on trace [OJ]
   glEndList();
  
-  glNewList(4,GL_COMPILE_AND_EXECUTE);  //liste numero 4
+  glNewList(4,GL_COMPILE_AND_EXECUTE);  //liste numero 4, cas droite parallèle
       
     std::vector<float> x = {-1,4,-0.5,2};
     std::vector<float> y = {-3,1,-4,-2};
@@ -269,14 +290,13 @@ void init()
     float x_F=0.0,y_F=0.0;
 
     point_controle(x,y,x_F,y_F);
-    std::cout << x_F << y_F << std::endl;
     trace_courbe(x,y,x_F,y_F);
 
-    openGL(x_F,y_F,1.,0.,0.,10.);
+    openGL(x_F,y_F,1.,0.,0.,10.);     //tracer du point de contrôle
 
   glEndList();
  
-  glNewList(5,GL_COMPILE_AND_EXECUTE);  //liste numero 5
+  glNewList(5,GL_COMPILE_AND_EXECUTE);  //liste numero 5, cas droite séquente
     
     std::vector<float> x1 = {-1,4,8,7};
     std::vector<float> y1 = {-3,1,-2,-7};
@@ -287,12 +307,12 @@ void init()
     point_controle(x1,y1,x_E,y_E);
     trace_courbe(x1,y1,x_E,y_E);
 
-    openGL(x_E,y_E,1.,0.,0.,10.);       //point de contrôle
+    openGL(x_E,y_E,1.,0.,0.,10.);       //tracer du point de contrôle
 
   glEndList();
 
 
-cout<<"\n Voila, c'est fini"<<endl;
+cout<<"\nVoila, c'est fini"<<endl;
 
 }   
    
