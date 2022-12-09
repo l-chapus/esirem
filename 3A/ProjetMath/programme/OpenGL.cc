@@ -283,7 +283,14 @@ void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y
     y_tmp0=y_tmp1;
   }
 }
-
+void trace_tout(std::vector<float>& x ,std::vector<float>& y)
+{
+  trace_init(x,y);
+  float x_C=0.0,y_C=0.0;            //ponit de contrôle
+  point_controle(x,y,x_C,y_C);
+  trace_courbe(x,y,x_C,y_C);
+  openGL(x_C,y_C,1.,0.,0.,10.);     //tracer du point de contrôle
+}
 
 void init()
 { 
@@ -302,14 +309,8 @@ void init()
       
     std::vector<float> x = {-1,4,-0.5,2};
     std::vector<float> y = {-3,1,-4,-2};
-    trace_init(x,y);
     
-    float x_F=0.0,y_F=0.0;
-
-    point_controle(x,y,x_F,y_F);
-    trace_courbe(x,y,x_F,y_F);
-
-    openGL(x_F,y_F,1.,0.,0.,10.);     //tracer du point de contrôle
+    trace_tout(x,y);
 
   glEndList();
  
@@ -317,14 +318,8 @@ void init()
     
     std::vector<float> x1 = {-1,4,8,7};
     std::vector<float> y1 = {-3,1,-2,-7};
-    trace_init(x1,y1);
     
-    float x_E=0.0,y_E=0.0;
-
-    point_controle(x1,y1,x_E,y_E);
-    trace_courbe(x1,y1,x_E,y_E);
-
-    openGL(x_E,y_E,1.,0.,0.,10.);       //tracer du point de contrôle
+    trace_tout(x1,y1);
 
   glEndList();
 
