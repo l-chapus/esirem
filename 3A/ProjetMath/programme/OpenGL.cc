@@ -188,16 +188,18 @@ void trace_init(std::vector<float> x ,std::vector<float> y)
   openGL(x.at(fin-2),y.at(fin-2),0.2,0.2,0.90,10.);
   trace_segment(x.at(fin-1),y.at(fin-1),x.at(fin-2),y.at(fin-2),1.0,0.,0.,0.5);
 }
+
 float distance(float x_A,float y_A,float x_B,float y_B)
 {
   return (pow(pow(x_A-x_B ,2) + pow(y_A-y_B ,2) , 0.5));
 }
+
 void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M)
 {
-  float d1 = distance(x.at(0),y.at(0),x.at(3),y.at(3));       //AD
-  float d2 = distance(x.at(0),y.at(0),x.at(2),y.at(2));       //AC
-  float d3 = distance(x.at(1),y.at(1),x.at(2),y.at(2));       //BC
-  float d4 = distance(x.at(1),y.at(1),x.at(3),y.at(3));       //BD
+  float d1 = distance(x.at(0),y.at(0),x.at(3),y.at(3));       //[AD]
+  float d2 = distance(x.at(0),y.at(0),x.at(2),y.at(2));       //[AC]
+  float d3 = distance(x.at(1),y.at(1),x.at(2),y.at(2));       //[BC]
+  float d4 = distance(x.at(1),y.at(1),x.at(3),y.at(3));       //[BD]
   std::array<float,4> x0 = {d1,d2,d3,d4};
   std::sort(x0.begin(), x0.end());                            //trie dans l'ordre croissant les distances et ne conserve que la disatnce la plus petite
   if(x0.at(0)==d1)
@@ -220,8 +222,8 @@ void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,floa
     x_M=(x.at(1)+x.at(3))/2;
     y_M=(y.at(1)+y.at(3))/2;
   }
-
 }
+
 void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float& y_M)
 {
   assert (x.size()==y.size() && "Taille des listes différentes (point de contrôle)");
@@ -236,35 +238,35 @@ void point_controle(std::vector<float> x ,std::vector<float> y,float& x_M,float&
   {                           
     droite_parallele(x,y,x_M,y_M);
   }
-  else                                    //droites séquentes
+  else                                    //droites sécantes
   {                                     
     x_M = (b2-b1)/(a1-a2);
     y_M = a1*x_M+b1;       //ou y_M = a2*x_M+b2  (même résultat)
-
   }
 }
+
 void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y_M)
 {
   assert (x.size()==y.size() && "Taille des listes différentes (tracer de la courbe)");
   
   std::array<float,3> x0 = {0.0,x_M,0.0};
   std::array<float,3> y0 = {0.0,y_M,0.0};
-  if(distance(x.at(0),y.at(0),x_M,y_M) < distance(x.at(1),y.at(1),x_M,y_M))
+  if(distance(x.at(0),y.at(0),x_M,y_M) < distance(x.at(1),y.at(1),x_M,y_M))        //test de la longueur entre le point A et le point de contrôle
   {
     x0.at(0) = x.at(1);
     y0.at(0) = y.at(1);
   }
-  else
+  else                                                                            //test de la longueur entre le point B et le point de contrôle
   {
     x0.at(0) = x.at(0);
     y0.at(0) = y.at(0);
   }
-  if(distance(x.at(2),y.at(2),x_M,y_M) < distance(x.at(3),y.at(3),x_M,y_M))
+  if(distance(x.at(2),y.at(2),x_M,y_M) < distance(x.at(3),y.at(3),x_M,y_M))      //test de la longueur entre le point C et le point de contrôle
   {
     x0.at(2) = x.at(3);
     y0.at(2) = y.at(3);
   }
-  else
+  else                                                                          //test de la longueur entre le point D et le point de contrôle
   {
     x0.at(2) = x.at(2);
     y0.at(2) = y.at(2);
@@ -278,11 +280,12 @@ void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y
     t=k/n;
     x_tmp1=(1-t)*(1-t)*x0.at(0)+2*t*(1-t)*x0.at(1)+t*t*x0.at(2);
     y_tmp1=(1-t)*(1-t)*y0.at(0)+2*t*(1-t)*y0.at(1)+t*t*y0.at(2);
-    trace_segment(x_tmp0,y_tmp0,x_tmp1,y_tmp1,0.0,1.,0.,3.0);
+    trace_segment(x_tmp0,y_tmp0,x_tmp1,y_tmp1,0.0,1.,0.,3.0);                 //trace un petit bout de segment
     x_tmp0=x_tmp1;
     y_tmp0=y_tmp1;
   }
 }
+
 void trace_tout(std::vector<float>& x ,std::vector<float>& y)
 {
   trace_init(x,y);
@@ -347,8 +350,8 @@ void affichage()
   glTranslatef(-trX,trY,0.);
       glCallList(1); // appel de la liste numero 1
       glCallList(2);   // appel de la liste numero 2
-      glCallList(4);   // appel de la liste numero 4
-      //glCallList(5);   // appel de la liste numero 5
+      //glCallList(4);   // appel de la liste numero 4
+      glCallList(5);   // appel de la liste numero 5
  glFlush(); 
   // On echange les buffers
   glutSwapBuffers();
