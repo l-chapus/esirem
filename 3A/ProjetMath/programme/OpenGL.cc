@@ -180,12 +180,12 @@ void trace_segment(double x0, double y0,double x1, double y1, double red, double
 void trace_init(std::vector<float> x ,std::vector<float> y)
 {
   assert (x.size()==y.size() && "Taille des listes différentes (tracer initiale)");
-  openGL(x.at(0),y.at(0),0.2,0.2,0.90,10.);
-  openGL(x.at(1),y.at(1),0.2,0.2,0.90,10.);
+  openGL(x.at(0),y.at(0),0.2,0.2,0.90,10.);                             //permier point
+  openGL(x.at(1),y.at(1),0.2,0.2,0.90,10.);                             //deuxième point
   trace_segment(x.at(0),y.at(0),x.at(1),y.at(1),1.0,0.,0.,0.5);
   int fin=x.size();
-  openGL(x.at(fin-1),y.at(fin-1),0.2,0.2,0.90,10.);
-  openGL(x.at(fin-2),y.at(fin-2),0.2,0.2,0.90,10.);
+  openGL(x.at(fin-1),y.at(fin-1),0.2,0.2,0.90,10.);                     //avant dernier point (troisième dans notre cas)
+  openGL(x.at(fin-2),y.at(fin-2),0.2,0.2,0.90,10.);                     //dernier point (quatrième dans notre cas)
   trace_segment(x.at(fin-1),y.at(fin-1),x.at(fin-2),y.at(fin-2),1.0,0.,0.,0.5);
 }
 
@@ -201,7 +201,7 @@ void droite_parallele(std::vector<float> x ,std::vector<float> y,float& x_M,floa
   float d3 = distance(x.at(1),y.at(1),x.at(2),y.at(2));       //[BC]
   float d4 = distance(x.at(1),y.at(1),x.at(3),y.at(3));       //[BD]
   std::array<float,4> x0 = {d1,d2,d3,d4};
-  std::sort(x0.begin(), x0.end());                            //trie dans l'ordre croissant les distances et ne conserve que la disatnce la plus petite
+  std::sort(x0.begin(), x0.end());                            //trie dans l'ordre croissant les distances et ne conserve que la distance la plus petite
   if(x0.at(0)==d1)
   {
     x_M=(x.at(0)+x.at(3))/2;
@@ -289,10 +289,10 @@ void trace_courbe(std::vector<float>& x ,std::vector<float>& y,float x_M,float y
 void trace_tout(std::vector<float>& x ,std::vector<float>& y)
 {
   trace_init(x,y);
-  float x_C=0.0,y_C=0.0;            //ponit de contrôle
-  point_controle(x,y,x_C,y_C);
-  trace_courbe(x,y,x_C,y_C);
-  openGL(x_C,y_C,1.,0.,0.,10.);     //tracer du point de contrôle
+  float x_M=0.0,y_M=0.0;            //point de contrôle
+  point_controle(x,y,x_M,y_M);
+  trace_courbe(x,y,x_M,y_M);
+  openGL(x_M,y_M,1.,0.,0.,10.);     //tracer du point de contrôle
 }
 
 void init()
@@ -350,8 +350,8 @@ void affichage()
   glTranslatef(-trX,trY,0.);
       glCallList(1); // appel de la liste numero 1
       glCallList(2);   // appel de la liste numero 2
-      //glCallList(4);   // appel de la liste numero 4
-      glCallList(5);   // appel de la liste numero 5
+      glCallList(4);   // appel de la liste numero 4
+      //glCallList(5);   // appel de la liste numero 5
  glFlush(); 
   // On echange les buffers
   glutSwapBuffers();
