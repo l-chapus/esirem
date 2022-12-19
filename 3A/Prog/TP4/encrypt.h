@@ -6,6 +6,7 @@
 
 class Encrypt{
 public:
+	
 	std::string plain();
 	std::string cipher();
 private:
