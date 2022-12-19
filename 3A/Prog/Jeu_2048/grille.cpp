@@ -56,9 +56,9 @@ void Grille::affichage() {
 void Grille::ecran_fin(){
 	system("clear");
 	std::cout << "   ██████  ██████  ███    ██  ██████  ██████   █████  ████████ ███████     ██ " << std::endl;
-	std::cout << "  ██      ██    ██ ████   ██ ██       ██   ██ ██   ██    ██    ██          ██" << std::endl;
-	std::cout << "  ██      ██    ██ ██ ██  ██ ██   ███ ██████  ███████    ██    ███████     ██" << std::endl;
-	std::cout << "  ██      ██    ██ ██  ██ ██ ██    ██ ██   ██ ██   ██    ██         ██       " << std::endl;
+	std::cout << "  ██      ██    ██ ████   ██ ██       ██   ██ ██   ██    ██    ██          ██ " << std::endl;
+	std::cout << "  ██      ██    ██ ██ ██  ██ ██   ███ ██████  ███████    ██    ███████     ██ " << std::endl;
+	std::cout << "  ██      ██    ██ ██  ██ ██ ██    ██ ██   ██ ██   ██    ██         ██        " << std::endl;
 	std::cout << "   ██████  ██████  ██   ████  ██████  ██   ██ ██   ██    ██    ███████     ██ " << std::endl << std::endl;
 	std::cout << "score : " << score() << std::endl;
 	std::cout << "nombre de mouvements : " << _mouvement << std::endl;

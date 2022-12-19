@@ -9,9 +9,9 @@
 
 class Bibliotheque{
 private:
-	std::std::vector<Livre> _livres;
-	std::std::vector<Auteur> _auteurs;
-	std::std::vector<Lecteur> _lecteurs;
+	std::vector<Livre> _livres;
+	std::vector<Auteur> _auteurs;
+	std::vector<Lecteur> _lecteurs;
 public:
 	Bibliotheque(std::vector<Livre> livres, std::vector<Auteur> auteurs, std::vector<Lecteur> lecteurs);
 	std::vector<Livre> get_livres();
