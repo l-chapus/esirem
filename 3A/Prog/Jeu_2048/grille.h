@@ -1,13 +1,15 @@
 #pragma once
 #include <array>
 #include <iostream>
+#include <vector>
 
 class Grille{
 private:
-	std::array<int,16> _board;
+	std::vector<int> _board;
 	int _mouvement;
 	bool end=true;
 	int _meilleur_score;
+	int _taille_grille;
 
 	void ecran_fin();
 	void sortie();
