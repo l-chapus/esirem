@@ -72,7 +72,8 @@ void Grille::ecran_fin(){
 	std::cout << "   ██████  ██████  ██   ████  ██████  ██   ██ ██   ██    ██    ███████     ██ " << std::endl << std::endl;
 	std::cout << "score : " << score() << std::endl;
 	std::cout << "nombre de mouvements : " << _mouvement << std::endl;
-	sortie();
+	std::this_thread::sleep_for(std::chrono::milliseconds(5000));
+	menu();
 }
 
 int Grille::score() const {
@@ -212,7 +213,7 @@ void Grille::bas(){
 bool Grille::fin_jeu(){
 	bool tmp=false;
 	std::vector<int> tmp2 = _board;
-	int n = _board.size();
+	int n = (_taille_grille*_taille_grille);
 	for(int k=0;k<n;++k){
 		if(_board.at(k)==0){
 			tmp=true;
@@ -287,7 +288,7 @@ void Grille::deplacement(){
 		}
 
 		if(move == "m"){
-			play();
+			menu();
 		}
 	}
 }
@@ -333,12 +334,8 @@ void Grille::deplacement_auto(std::string direction){
 		}
 	}
 }
-
-void Grille::play(){
+void Grille::menu(){
 	std::string mode="";
-	std::cout << "Bienvue dans le jeu 2048." << std::endl;
-	std::cout << "Choisissez une taille de grille :" << std::endl;
-	std::cin >> _taille_grille;
 	std::cout << "Il y a 2 modes de jeu : soit automatique, soit manuel. Veuillez séléctionner le mode qui vous intérresse :" << std::endl;
 	std::cout << "m = manuel , a = automatique et e = exit" << std::endl;
 	std::cin >> mode;
@@ -352,6 +349,12 @@ void Grille::play(){
 	if(mode=="e" || mode=="E"){
 		sortie();
 	}
+}
+void Grille::play(){
+	std::cout << "Bienvue dans le jeu 2048." << std::endl;
+	std::cout << "Choisissez une taille de grille :" << std::endl;
+	std::cin >> _taille_grille;
+	menu();
 }
 
 void Grille::jeu_manuel() {
@@ -402,6 +405,6 @@ void Grille::jeu_auto(){
 		jeu_auto();
 	}
 	else{
-		play();
+		menu();
 	}
 }

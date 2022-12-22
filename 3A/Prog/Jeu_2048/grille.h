@@ -34,6 +34,7 @@ private:
 	int get_mouvement() const;
 	int score() const;
 	void deplacement_auto(std::string direction);
+	void menu();
 public:
 	Grille();
 	void play();
