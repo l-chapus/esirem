@@ -65,13 +65,16 @@ void Grille::ecran_fin(){
 	sortie();
 }
 
-int Grille::score(){
+int Grille::score() const {
 	int S=0;
 	int n=_board.size();
 	for(int k=0;k<n;++k){
 		S=S+_board.at(k);
 	}
 	return S;
+}
+int Grille::get_mouvement() const {
+	return _mouvement;
 }
 
 int Grille::generateur_valeur(){
@@ -80,6 +83,8 @@ int Grille::generateur_valeur(){
 }
 
 void Grille::init(){
+	_mouvement=0;
+	_board = {0};
 	int nb=rand()%2 + 1;
 	for(int k=0;k<nb;++k){
 		int emplacement=rand()%15;
@@ -265,6 +270,48 @@ void Grille::deplacement(){
 		}
 
 		if(move == "e"){
+			sortie();
+		}
+	}
+}
+void Grille::deplacement_auto(std::string direction){
+	bool fin = fin_jeu();
+	std::array<int,16> tmp = {0};
+	if(fin){
+		if(direction == "z"){
+			tmp = _board;
+			haut();
+			if(tmp != _board){
+				ajout_valeur();
+				_mouvement++;
+			}
+		}
+		if(direction == "s"){
+			tmp = _board;
+			bas();
+			if(tmp != _board){
+				ajout_valeur();
+				_mouvement++;
+			}
+		}
+		if(direction == "q"){
+			tmp = _board;
+			gauche();
+			if(tmp != _board){
+				ajout_valeur();
+				_mouvement++;
+			}
+		}
+		if(direction == "d"){
+			tmp = _board;
+			droite();
+			if(tmp != _board){
+				ajout_valeur();
+				_mouvement++;
+			}
+		}
+
+		if(direction == "e"){
 			sortie();
 		}
 	}

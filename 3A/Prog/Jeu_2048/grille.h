@@ -1,5 +1,6 @@
+#pragma once
 #include <array>
-
+#include <iostream>
 
 class Grille{
 private:
@@ -8,7 +9,6 @@ private:
 	
 	void ecran_fin();
 	void sortie();
-	int score();
 	int generateur_valeur();
 	void ajout_valeur();
 	void droite();
@@ -23,9 +23,13 @@ private:
 	void mv_bas();
 public:
 	bool end=true;
+	
 	Grille();
 	bool fin_jeu();  			//true si le jeu peut continuer et false si le jeu ne peut pas continuer
 	void affichage();
 	void init();
 	void deplacement();
+	int get_mouvement() const;
+	int score() const;
+	void deplacement_auto(std::string direction);
 };
