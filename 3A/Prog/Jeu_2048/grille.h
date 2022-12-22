@@ -6,7 +6,9 @@ class Grille{
 private:
 	std::array<int,16> _board;
 	int _mouvement;
-	
+	bool end=true;
+	int _meilleur_score;
+
 	void ecran_fin();
 	void sortie();
 	int generateur_valeur();
@@ -21,10 +23,8 @@ private:
 	void mv_gauche();
 	void mv_haut();
 	void mv_bas();
-public:
-	bool end=true;
-	
-	Grille();
+	void jeu_auto();
+	void jeu_manuel();
 	bool fin_jeu();  			//true si le jeu peut continuer et false si le jeu ne peut pas continuer
 	void affichage();
 	void init();
@@ -32,4 +32,7 @@ public:
 	int get_mouvement() const;
 	int score() const;
 	void deplacement_auto(std::string direction);
+public:
+	Grille();
+	void play();
 };

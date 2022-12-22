@@ -2,6 +2,7 @@
 #include <iostream>
 #include <array>
 #include <ctime>
+#include <unistd.h>
 
 Grille::Grille() {
 	_mouvement = 0;
@@ -314,5 +315,71 @@ void Grille::deplacement_auto(std::string direction){
 		if(direction == "e"){
 			sortie();
 		}
+	}
+}
+
+void Grille::play(){
+	std::string mode="";
+	std::cout << "Bienvue dans le jeu 2048." << std::endl;
+	std::cout << "Il y a 2 modes de jeu : soit automatique, soit manuel. Veuillez séléctionner le mode qui vous intérresse :" << std::endl;
+	std::cout << "m pour manuel et a pour automatique" << std::endl;
+	std::cin >> mode;
+	if(mode=="m" || mode=="M"){
+		jeu_manuel();
+	}
+	if(mode=="a" || mode=="A"){
+		jeu_auto();
+	}
+}
+
+void Grille::jeu_manuel() {
+	init();
+	affichage();
+	while(fin_jeu() && end){
+		deplacement();
+		affichage();
+	}
+}
+
+void Grille::jeu_auto(){
+
+	int score_tmp=0;
+	std::array<int,16> tmp = {0};
+
+	init();
+	affichage();		
+	while(fin_jeu() && end)
+	{
+		sleep(1);
+		tmp = _board;
+		deplacement_auto("s");
+		if(tmp==_board){
+			deplacement_auto("q");
+			if(tmp==_board){
+				deplacement_auto("d");
+				if(tmp==_board){
+					deplacement_auto("z");
+				}
+			}
+		}
+		affichage();
+	}
+		
+	score_tmp = score();
+	if(score_tmp>_meilleur_score)
+	{
+		_meilleur_score=score();
+	}
+
+	std::string reponse="";
+	std::cout << "Le jeu est terminé." << std::endl;
+	std::cout << "Voulez-vous relancer une partie ?" << std::endl;
+	std::cout << "r pour relancer et e pour revenir au menu" << std::endl;
+	std::cin >> reponse;
+	if(reponse == "r" || reponse == "R"){
+		jeu_auto();
+	}
+	else{
+		play();
 	}
 }
