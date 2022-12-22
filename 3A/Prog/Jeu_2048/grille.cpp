@@ -12,7 +12,8 @@ Grille::Grille() {
 void Grille::affichage() {
 	int tmp=0;
 	system("clear");
-	std::cout << "Le score est de : " << score() << std::endl;
+	std::cout << "Le meilleur score est de : " << _meilleur_score << std::endl;
+	std::cout << "Le score de la parti en cour est de : " << score() << std::endl;
 	std::cout << "Le nombre de mouvements est : " << _mouvement << std::endl;
 	std::cout << "-----------------------------" << std::endl;
 	for(int x=0;x<4;x++){
