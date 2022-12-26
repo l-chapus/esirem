@@ -10,10 +10,11 @@ private:
 	bool end=true;
 	int _meilleur_score;
 	int _taille_grille;
+	int tmp;
 
 	void ecran_fin();
 	void sortie();
-	int generateur_valeur();
+	int generateur_valeur() const ;
 	void ajout_valeur();
 	void droite();
 	void gauche();
@@ -32,7 +33,7 @@ private:
 	void init();
 	void deplacement();
 	int get_mouvement() const;
-	int score() const;
+	int score();
 	void deplacement_auto(std::string direction);
 	void menu();
 public:

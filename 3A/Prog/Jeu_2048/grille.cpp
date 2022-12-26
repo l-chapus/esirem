@@ -11,11 +11,13 @@ Grille::Grille() {
 	_mouvement = 0;
 	_board = {0};
 	_taille_grille=4;
+	_meilleur_score=0;
 }
 
 void Grille::affichage() {
 	int tmp=0;
 	system("clear");
+	score();
 	std::cout << "Le meilleur score est de : " << _meilleur_score << std::endl;
 	std::cout << "Le score de la parti en cour est de : " << score() << std::endl;
 	std::cout << "Le nombre de mouvements est : " << _mouvement << std::endl;
@@ -76,11 +78,14 @@ void Grille::ecran_fin(){
 	menu();
 }
 
-int Grille::score() const {
+int Grille::score(){
 	int S=0;
 	int n=_board.size();
 	for(int k=0;k<n;++k){
 		S=S+_board.at(k);
+	}
+	if(S>_meilleur_score){
+		_meilleur_score=S;
 	}
 	return S;
 }
@@ -88,15 +93,22 @@ int Grille::get_mouvement() const {
 	return _mouvement;
 }
 
-int Grille::generateur_valeur(){
+int Grille::generateur_valeur() const {
 	int valeur[4] = {2,2,2,4};
 	return valeur[rand() % 4];
 }
 
 void Grille::init(){
 	_mouvement=0;
-	for(int k=0;k<(_taille_grille*_taille_grille);k++){
-		_board.push_back(0);
+	if(_board.size()==(_taille_grille*_taille_grille)){
+		for(int k=0;k<(_taille_grille*_taille_grille);k++){
+			_board.at(k)=0;
+		}
+	}
+	else{
+		for(int k=0;k<(_taille_grille*_taille_grille);k++){
+			_board.push_back(0);
+		}
 	}
 	for(int k=0;k<(_taille_grille*_taille_grille);k++){
 		_board.at(k)=0;
@@ -233,6 +245,9 @@ bool Grille::fin_jeu(){
 }
 
 void Grille::sortie(){
+	system("clear");
+	std::cout << "A Bientôt !" << std::endl << std::endl;
+	std::cout << "Meilleur score de la session : " << _meilleur_score << std::endl;
 	end = false;
 }
 
@@ -246,6 +261,7 @@ void Grille::ajout_valeur(){
 }
 
 void Grille::deplacement(){
+	std::cout << tmp << std::endl;
 	std::cout << "z = haut, s = bas, d = droite, q = gauche et m = menu" << std::endl;
 	std::cout << "Appuyer sur une touche :" << std::endl;
 	bool fin = fin_jeu();
@@ -328,10 +344,6 @@ void Grille::deplacement_auto(std::string direction){
 				_mouvement++;
 			}
 		}
-
-		if(direction == "e"){
-			sortie();
-		}
 	}
 }
 void Grille::menu(){
@@ -340,14 +352,15 @@ void Grille::menu(){
 	std::cout << "m = manuel , a = automatique et e = exit" << std::endl;
 	std::cin >> mode;
 	init();
-	if(mode=="m" || mode=="M"){
+	if(mode=="m"){
 		jeu_manuel();
 	}
-	if(mode=="a" || mode=="A"){
+	if(mode=="a"){
 		jeu_auto();
 	}
-	if(mode=="e" || mode=="E"){
+	if(mode=="e"){
 		sortie();
+		tmp=1;
 	}
 }
 void Grille::play(){
@@ -364,11 +377,10 @@ void Grille::jeu_manuel() {
 		deplacement();
 		affichage();
 	}
+	menu();
 }
 
 void Grille::jeu_auto(){
-
-	int score_tmp=0;
 	std::vector<int> tmp = {0};
 
 	init();
@@ -389,17 +401,11 @@ void Grille::jeu_auto(){
 		}
 		affichage();
 	}
-		
-	score_tmp = score();
-	if(score_tmp>_meilleur_score)
-	{
-		_meilleur_score=score();
-	}
-
+	
 	std::string reponse="";
 	std::cout << "Le jeu est terminé." << std::endl;
 	std::cout << "Voulez-vous relancer une partie ?" << std::endl;
-	std::cout << "r pour relancer et e pour revenir au menu" << std::endl;
+	std::cout << "r pour relancer et m pour revenir au menu" << std::endl;
 	std::cin >> reponse;
 	if(reponse == "r" || reponse == "R"){
 		jeu_auto();
