@@ -2,3 +2,4 @@
 app
 *.d
 OpenGL
+*.class
