@@ -1,1 +1,1 @@
-# Projets et rapport de 3A
+# Ce dossier contient tous les projets menner en 3A, ainsi que dans certain cas un compte rendu
