@@ -36,7 +36,7 @@ JC = javac
 # If your version of make can't handle the leading tabs on each
 # line, just remove them (these are also just added for readability).
 
-CLASSES = test.java
+CLASSES = Forme.java
 
 #
 # This target entry uses Suffix Replacement within a macro: 
