@@ -1,0 +1,114 @@
+body {
+    margin-top: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    font-weight: bold;
+}
+
+nav span {
+    display: inline-block;
+    margin: 0 20px 0 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+nav span:hover{
+    color: #4691ff;
+}
+
+nav img {
+    width: 80px;
+}
+
+section {
+    width: 100%;
+}
+
+section video {
+    width: 100%;
+}
+
+#section-mandalorian {
+    position: relative;
+}
+
+#mandalorian-info {
+    position: absolute;
+    left: 100px;
+    bottom: 100px; 
+    width: 300px;
+
+    color: white;
+    text-align: center;
+}
+
+#mandalorian-info img {
+    width: 100%;
+}
+
+button {
+    border: none;
+    padding: 20px;
+    min-width: 200px;
+    color: #fff;
+    border-radius: 30px;
+    background-color: #2E7D49;
+}
+
+#section-news {
+    background-color:#030C40;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#section-news h2 {
+    text-align: center;
+}
+
+#section-news > div {
+    display: flex;
+    width: 100%;
+}
+#section-news > div article
+{
+    width: 100%;
+    margin: 5px;
+}
+
+#section-news > div img {
+    width: 100%;
+    transition: transform 500ms;
+}
+
+#section-news > div img:hover {
+    transform: perspective(500px) rotate3D(0, 1, 0, 45deg);
+}
+
+@media screen and (max-width: 800px)
+{
+    #section-news > div {
+        flex-direction: column;
+    }
+
+
+    #mandalorian-info {
+        display: none;
+    }
+
+    nav span {
+        display: none;
+    }
+
+    nav {
+        justify-content: center;
+    }
+}
