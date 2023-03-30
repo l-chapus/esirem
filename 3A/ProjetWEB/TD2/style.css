@@ -1,0 +1,60 @@
+form {
+    display: flex;
+    background-color:#323c58;
+    color: white;
+    flex-direction: column;
+    width: 300px;
+    align-items: center;
+}
+div {
+    background-color: #151a24;
+    color: white;
+    display: flex;
+}
+
+#colored {
+    background-color:#323c58;
+    display: flex;
+    align-items: center;
+}
+#selection{
+    background-color:#323c58;
+    display: flex;
+}
+
+label {
+    padding-top: 20px;
+    padding-bottom: 5px;
+    color: white;
+}
+input {
+    background-color: #232a3d;
+    border:1px solid #4f5464;
+    width: 90%;
+    padding-top: 8px;
+    border-radius: 3px;
+    color: white;
+    text-align: right;
+}
+button {
+    margin-top: 15px;
+    background-color:  #21ac6b;
+    width: 90%;
+    padding: 8px;
+    border: none;
+    color: white;
+    border-radius: 6px;
+}
+h2 {
+    align-items: center;
+    color: white;
+}
+body {
+    margin-top: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    display: flex;
+    background-color: #151a24;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>La démo du cours de Web</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+
+    <body>
+        <form action="http://57.128.111.226" method="POST">
+            <h2>Position</h2>
+            <label>X Center</label>
+            <input type="text" name="xCenter" id="xCenter">
+            <label>Y Center</label>
+            <input type="text" name="yCenter" id="yCenter">
+            <label>Zoom</label>
+            <input type="text" name="zoom" id="zoom">
+            <label>Max Iterations</label>
+            <input type="text" name="maxIteration" id="maxIteration">
+            <button type="button">GET IT !</button>
+            <h2>COLOR</h2>
+            <div id="colored">
+                <input type="radio" name="colored" id="b&w">B&W
+                <input type="radio" name="colored">Colored
+            </div>
+            <div id="selection">
+                <input type="checkbox" id="red">Red
+                <input type="checkbox" id="green">Green
+                <input type="checkbox" id="blue">Blue
+            </div>
+            
+        </form>
+
+        <div>
+
+        </div>
+        <script src="js/fractal.js"></script>  
+    </body>
+</html>
