@@ -1,5 +1,5 @@
 import { Notifier } from "../pattern/notifier.js";
-import { Counter } from "../counter.js";
+import { Counter } from "../models/counter.js";
 
 export class Controller extends Notifier
 {
