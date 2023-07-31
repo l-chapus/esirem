@@ -1,0 +1,29 @@
+keyboard {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(10, 1fr);
+}
+
+keyboard-symbol {
+    border: 1px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 50px;
+    filter: invert();
+
+    border: 1px solid #000;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+keyboard-symbol:hover {
+    background-color: #eee;
+}
+
+keyboard-symbol.active {
+    background-color: #ddd;
+}

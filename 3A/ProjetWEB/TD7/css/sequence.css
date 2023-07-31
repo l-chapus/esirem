@@ -1,0 +1,38 @@
+sequence {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+
+    counter-reset: counterSequence;
+}
+
+sequence-symbol {
+    height: 100%;
+    border: 1px solid #000;
+
+    position: relative;
+
+    background: no-repeat center;
+    background-size: 80px;
+
+    filter: invert();
+
+    counter-increment: counterSequence;
+}
+
+sequence-symbol::after {
+    content: counter(counterSequence);
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #000;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 100%;
+    font-size: 12px;
+    font-weight: bold;;
+}
