@@ -1,6 +1,6 @@
 import tkinter as tk
 import math
-#from tkinter import messagebox
+from tkinter import messagebox
 
 def initWindow():
     window = tk.Tk()
@@ -63,20 +63,19 @@ def initWindow():
     color.place(x=150, y=85)
 
     # Options de la liste déroulante
-    optionsColors = ["Select", "Red", "Green", "Blue"]
+    optionsColors = ["Red", "Green", "Blue"]
 
     # Variable pour stocker l'option sélectionnée
-    selected_color = tk.StringVar(window)
-    selected_color.set(optionsColors[0])  # Option par défaut
+    selectedColor = tk.StringVar(window)
+    selectedColor.set(optionsColors[0])  # Option par défaut
 
     # Création de la liste déroulante
     colorMenu = tk.OptionMenu(
         window,
-        selected_color,
+        selectedColor,
         *optionsColors,
-        command=selected_color
     )
-    colorMenu.place(x=510, y=145)
+    colorMenu.place(x=520, y=145)
 
     speed = tk.Label(
         parameters_frame,
@@ -86,7 +85,7 @@ def initWindow():
     )
     speed.place(x=150, y=120)
 
-    optionsSpeed = ["5", "10", "15", "120"]
+    optionsSpeed = ["1", "2", "5", "10"]
 
     # Variable pour stocker l'option sélectionnée
     selectedSpeed = tk.StringVar(window)
@@ -96,13 +95,13 @@ def initWindow():
         window,
         selectedSpeed,
         *optionsSpeed,
-        command=selectedSpeed
+        #command=selectedSpeed
     )
     speedMenu.place(x=525, y=185)
 
     ##Canvas pour le dessin
     canvas = tk.Canvas(window, width=500, height=500, bg="white")
-    canvas.place(x=10, y=240)
+    canvas.place(x=130, y=240)
 
     ## Frame pour les opérations
     operation_frame = tk.Frame(window, width=780, height=70, bd=2, relief=tk.SOLID)
@@ -121,15 +120,16 @@ def initWindow():
         text="Execute",
         width=32,
         height=2,
-        #command=execute_fractal(canvas,selectedSpeed,selected_color),
+        command=lambda: execute_fractal(canvas, int(selectedSpeed.get()), selectedColor.get()),
     )
     buttonExecute.place(x=20, y=10)
+
     buttonErase = tk.Button(
         operation_frame,
         text="Erase",
         width=32,
         height=2,
-        command=buttonAboutClick,
+        command=lambda: erase(canvas),
     )
     buttonErase.place(x=270, y=10)
 
@@ -148,51 +148,42 @@ def initWindow():
 def buttonAboutClick():
     msg = messagebox.showinfo(
         title="A propos",
-        message="Auteurs : CHAPUS Louka et AMOURA Adil\nAffiliation : Polytech Dijon\nDate de version : 08/02/2024\nNuméro de version : 1"
+        message="Auteurs : CHAPUS Louka et AMOURA Adil\nAffiliation : Polytech Dijon\nDate de version : 10/02/2024\nNuméro de version : 2"
     )
 
 def execute_fractal(canvas, order, color):
     canvas.delete("all")  # Efface le contenu du canvas avant de générer la fractale
     length = 400.0
-    start_point = (10, 200)
+    start_point = (50, 140)
     angle = 0
-    generer_flocon_koch(canvas, order, length, start_point, angle, color)
+    # Générer la courbe de Koch pour chaque côté du flocon
+    for _ in range(3):
+        genererFloconKoch(canvas, order, length, start_point, angle, color)
+        start_point = (start_point[0] + length * math.cos(angle), start_point[1] + length * math.sin(angle))
+        angle += math.radians(120)
 
-def generer_flocon_koch(canvas, order, length, start_point, angle, color):
-    if order == 0:
+
+def genererFloconKoch(canvas, n, cote, start_point, angle, color):
+    if n == 0:
         end_point = (
-            start_point[0] + length * math.cos(angle),
-            start_point[1] + length * math.sin(angle)
+            start_point[0] + cote * math.cos(angle),
+            start_point[1] + cote * math.sin(angle)  # Inversion de l'axe y
         )
         canvas.create_line(start_point, end_point, fill=color, width=2)
     else:
-        third_length = length / 3.0
+        cote /= 3.0
+        genererFloconKoch(canvas, n - 1, cote, start_point, angle, color)
+        start_point = (start_point[0] + cote * math.cos(angle), start_point[1] + cote * math.sin(angle))  # Inversion de l'axe y
+        angle += math.radians(-60)
+        genererFloconKoch(canvas, n - 1, cote, start_point, angle, color)
+        start_point = (start_point[0] + cote * math.cos(angle), start_point[1] + cote * math.sin(angle))  # Inversion de l'axe y
+        angle += math.radians(120)
+        genererFloconKoch(canvas, n - 1, cote, start_point, angle, color)
+        start_point = (start_point[0] + cote * math.cos(angle), start_point[1] + cote * math.sin(angle))  # Inversion de l'axe y
+        angle += math.radians(-60)
+        genererFloconKoch(canvas, n - 1, cote, start_point, angle, color)
 
-        p1 = start_point
-        p2 = (
-            p1[0] + third_length * math.cos(angle),
-            p1[1] + third_length * math.sin(angle)
-        )
-
-        p3 = (
-            p2[0] + third_length * math.cos(angle - math.pi / 3),
-            p2[1] + third_length * math.sin(angle - math.pi / 3)
-        )
-
-        p4 = (
-            p3[0] + third_length * math.cos(angle + math.pi / 3),
-            p3[1] + third_length * math.sin(angle + math.pi / 3)
-        )
-
-        p5 = (
-            p4[0] + third_length * math.cos(angle),
-            p4[1] + third_length * math.sin(angle)
-        )
-
-        generer_flocon_koch(canvas, order - 1, third_length, p1, angle, color)
-        generer_flocon_koch(canvas, order - 1, third_length, p2, angle - math.pi / 3, color)
-        generer_flocon_koch(canvas, order - 1, third_length, p3, angle + math.pi / 3, color)
-        generer_flocon_koch(canvas, order - 1, third_length, p4, angle - math.pi / 3, color)
-        generer_flocon_koch(canvas, order - 1, third_length, p5, angle, color)
+def erase(canvas):
+    canvas.delete("all")
 
 initWindow()
