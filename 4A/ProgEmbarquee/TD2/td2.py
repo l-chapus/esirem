@@ -105,7 +105,7 @@ def initWindow():
     speed.place(x=150, y=120)        # Positionnement
 
     # Options de vitesse
-    optionsSpeed = ["5", "10", "20", "50", "200", "1000"]
+    optionsSpeed = ["5", "10", "20", "50", "200", "1000", "10000"]
 
     # Variable de chaîne pour stocker la vitesse sélectionnée
     selectedSpeed = tk.StringVar(window)
@@ -172,24 +172,25 @@ def initWindow():
 def buttonAboutClick():
     msg = messagebox.showinfo(
         title="A propos",
-        message="Auteurs : CHAPUS Louka et AMOURA Adil\nAffiliation : Polytech Dijon\nDate de version : 10/02/2024\nNuméro de version : 4"
+        message="Auteurs : CHAPUS Louka et AMOURA Adil\nAffiliation : Polytech Dijon\nDate de version : 13/02/2024\nNuméro de version : 5"
     )
 
 # Fonction pour exécuter la fractale
 def executeFractal(canvas, order, color, checkboxHistory, speed):
-    if not checkboxHistory:
-        erase(canvas)           # Effacer le contenu du canevas avant de générer la fractale
+    if order >= 0:
+        if not checkboxHistory:
+            erase(canvas)           # Effacer le contenu du canevas avant de générer la fractale
 
-    length = 400.0
-    start_point = (50, 140)
-    angle = 0
-    timeSleep = 1/speed
+        length = 400.0
+        start_point = (50, 140)
+        angle = 0
+        timeSleep = 1/speed
 
-    # Générer la courbe de Koch pour chaque côté du flocon
-    for _ in range(3):
-        genererFloconKoch(canvas, order, length, start_point, angle, color, timeSleep)
-        start_point = (start_point[0] + length * math.cos(angle), start_point[1] + length * math.sin(angle))
-        angle += math.radians(120)
+        # Générer la courbe de Koch pour chaque côté du flocon
+        for _ in range(3):
+            genererFloconKoch(canvas, order, length, start_point, angle, color, timeSleep)
+            start_point = (start_point[0] + length * math.cos(angle), start_point[1] + length * math.sin(angle))
+            angle += math.radians(120)
 
 # Fonction récursive pour générer la fractale de Koch
 def genererFloconKoch(canvas, n, cote, start_point, angle, color, sleep):
