@@ -1,14 +1,14 @@
 import time
-from tetris import Tetris
 
+from application import Application
 
 if __name__ == '__main__':
     try:
-        game = Tetris()
-        game.start()
+        game = Application()
+        #game.start()
 
         while True:
-            game.display()
+            game.update()
             time.sleep(1)
 
     except KeyboardInterrupt:
