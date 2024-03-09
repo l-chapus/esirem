@@ -2,6 +2,9 @@
 
 import os
 import platform
+import time
+#import keyboard
+
 from tetris import Tetris
 
 class Application:
@@ -18,17 +21,20 @@ class Application:
 
         self.player1Table = Tetris(40,60)
         self.player2Table = Tetris(40,60)
+        self.clock = 0
 
     def start(self):
-        os.system('cls')
+        self.player1Table.start()
+        self.player2Table.start()
+
 
     def displayTerminal(self):
-        if platform.system() == 'Windows':
+        if platform.system() == 'Windows':      #clear le terminal
             os.system('cls')
         else:
             os.system('clear')
 
-        for i in range(64): 
+        for i in range(64):         #fait l'affichage du fond et des 2 zones de jeux
             for j in range(96):
                 if i>0 and i<61 and j>0 and j<41:
                     print(self.player1Table.getTableXY(i-1,j-1), end='')
@@ -39,5 +45,22 @@ class Application:
             
             print("")
 
+
     def update(self):
         self.displayTerminal()
+        #self.player1Table.update()
+        self.player2Table.update()
+
+
+    def run(self):
+        if self.clock > 500:
+            self.update()
+            self.clock = 0
+
+        else:
+            self.clock =  self.clock + 1
+            time.sleep(0.001)
+
+            #if keyboard.read_key() == "q":
+            #    print("Exiting...")
+                #exit()
